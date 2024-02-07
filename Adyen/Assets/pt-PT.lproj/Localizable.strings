@@ -86,7 +86,6 @@
 "adyen.billingAddressSection.title" = "Morada de cobrança";
 "adyen.billingAddress.placeholder" = "O seu endereço de faturação";
 "adyen.deliveryAddressSection.title" = "Morada de entrega";
-"adyen.deliveryAddress.placeholder" = "A sua morada de entrega";
 "adyen.countryField.title" = "País";
 "adyen.countryField.placeholder" = "País";
 "adyen.countryField.invalid" = "País inválido";

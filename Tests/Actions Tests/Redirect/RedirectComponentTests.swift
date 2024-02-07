@@ -282,7 +282,7 @@ class RedirectComponentTests: XCTestCase {
         sut.handle(action)
         XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
         
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 2)
     }
     
     func testNativeRedirectReturnUrlMissingQueryParameters() {
@@ -310,7 +310,7 @@ class RedirectComponentTests: XCTestCase {
         sut.handle(action)
         XCTAssertFalse(RedirectComponent.applicationDidOpen(from: URL(string: "url://")!))
         
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 2)
     }
     
     func testNativeRedirectEndpointCallFails() {
@@ -342,6 +342,6 @@ class RedirectComponentTests: XCTestCase {
         sut.handle(action)
         XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
         
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 2)
     }
 }

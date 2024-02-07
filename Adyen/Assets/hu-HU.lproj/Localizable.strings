@@ -86,7 +86,6 @@
 "adyen.billingAddressSection.title" = "Számlázási cím";
 "adyen.billingAddress.placeholder" = "Az Ön számlázási címe";
 "adyen.deliveryAddressSection.title" = "Szállítási cím";
-"adyen.deliveryAddress.placeholder" = "Az Ön szállítási címe";
 "adyen.countryField.title" = "Ország";
 "adyen.countryField.placeholder" = "Ország";
 "adyen.countryField.invalid" = "Érvénytelen ország";

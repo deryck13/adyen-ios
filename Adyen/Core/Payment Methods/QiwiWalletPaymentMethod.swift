@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -37,28 +37,15 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
         var phoneExtensions: [PhoneExtension]?
         if var detailsContainer = try? container.nestedUnkeyedContainer(forKey: .details) {
             while !detailsContainer.isAtEnd {
-                let detailContainer = try detailsContainer.nestedContainer(keyedBy: CodingKeys.Details.self)
+                let detailContainer = try detailsContainer.nestedContainer(keyedBy: CodingKeys.self)
                 let detailKey = try detailContainer.decode(String.self, forKey: .key)
-                guard detailKey == CodingKeys.Details.phoneExtensionsKey else { continue }
+                guard detailKey == "qiwiwallet.telephoneNumberPrefix" else { continue }
 
                 phoneExtensions = try detailContainer.decode([PhoneExtension].self, forKey: .items)
             }
         }
         
         self.phoneExtensions = phoneExtensions ?? PhoneExtensionsRepository.get(with: PhoneExtensionsQuery(paymentMethod: .qiwiWallet))
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(type, forKey: .type)
-        try container.encode(name, forKey: .name)
-        
-        var detailsContainer = container.nestedUnkeyedContainer(forKey: .details)
-        var nested = detailsContainer.nestedContainer(keyedBy: CodingKeys.Details.self)
-        
-        try nested.encode(CodingKeys.Details.phoneExtensionsKey, forKey: .key)
-        try nested.encode(phoneExtensions, forKey: .items)
     }
     
     @_spi(AdyenInternal)
@@ -70,18 +57,13 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
         case type
         case name
         case details
-        
-        enum Details: String, CodingKey {
-            case key
-            case items
-            
-            static var phoneExtensionsKey: String { "qiwiwallet.telephoneNumberPrefix" }
-        }
+        case key
+        case items
     }
 }
 
 /// Describes a country phone extension.
-public struct PhoneExtension: Codable, Equatable {
+public struct PhoneExtension: Decodable, Equatable {
     
     /// The phone extension.
     public let value: String

@@ -3,7 +3,6 @@
 @_spi(AdyenInternal) import Adyen
 @testable import AdyenDropIn
 import Foundation
-import XCTest
 
 final class PresentationDelegateMock: NavigationDelegate {
 
@@ -21,17 +20,12 @@ final class PresentationDelegateMock: NavigationDelegate {
     }
 
     var presentComponentReceivedComponent: PresentableComponent?
-    var doPresent: ((_ component: PresentableComponent) throws -> Void)?
+    var doPresent: ((_ component: PresentableComponent) -> Void)?
 
     func present(component: PresentableComponent) {
         presentComponentCallsCount += 1
         presentComponentReceivedComponent = component
-        
-        do {
-            try doPresent?(component)
-        } catch {
-            XCTFail(error.localizedDescription)
-        }
+        doPresent?(component)
     }
 
 }

@@ -7,7 +7,7 @@
 import Foundation
 
 // Utility class with example test card numbers.
-enum CardNumbers {
+struct CardNumbers {
     
     static let masterCard = [
         "2223000048410010", // Credit    NL

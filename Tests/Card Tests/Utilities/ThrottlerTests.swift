@@ -11,7 +11,7 @@ import XCTest
 class ThrottlerTests: XCTestCase {
 
     func test() {
-        let sut = Throttler(minimumDelay: 0.3)
+        let sut = Throttler(minimumDelay: 1)
         
         let lastBlockExpectation = expectation(description: "wait for last block execution")
         
@@ -29,11 +29,12 @@ class ThrottlerTests: XCTestCase {
                 }
             }
             
-            wait(for: .milliseconds(5))
+            wait(for: .milliseconds(100))
         }
         
-        wait(for: [lastBlockExpectation], timeout: 100)
-        XCTAssertEqual(counter, 1) // Making sure the code was only executed once
+        waitForExpectations(timeout: 100, handler: nil)
+        
+        XCTAssertEqual(counter, 1)
     }
 
 }

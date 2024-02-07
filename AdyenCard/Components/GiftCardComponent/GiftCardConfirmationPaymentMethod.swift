@@ -60,14 +60,13 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
     }
     
     internal init(from decoder: Decoder) throws {
-        // We have to conform to Codable because `PaymentMethod` requires it
-        // but this struct should never be encoded/decoded as it's an intermediate state
         fatalError("This class should never be decoded.")
     }
     
-    internal func encode(to encoder: Encoder) throws {
-        // We have to conform to Codable because `PaymentMethod` requires it
-        // but this struct should never be encoded/decoded as it's an intermediate state
-        fatalError("This class should never be encoded.")
+    // MARK: - Decoding
+    
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case name
     }
 }

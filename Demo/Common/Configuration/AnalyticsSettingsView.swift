@@ -22,6 +22,5 @@ internal struct AnalyticsSettingsView: View {
             .navigationBarTitle("")
             .navigationBarHidden(true)
         }
-        .navigationViewStyle(.stack)
     }
 }

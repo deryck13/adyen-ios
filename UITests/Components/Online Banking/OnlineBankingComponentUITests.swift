@@ -73,8 +73,9 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         // Then
         let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
+        button.sendActions(for: .touchUpInside)
 
-        let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
+        let didContnueExpectation = XCTestExpectation(description: "Dummy Expectation")
 
         delegate.onDidSubmit = { data, component in
             // Assert
@@ -83,17 +84,13 @@ class OnlineBankingComponentUITests: XCTestCase {
             XCTAssertEqual(details.type, .onlineBankingCZ)
             XCTAssertEqual(details.issuer, "jp")
             sut.stopLoadingIfNeeded()
-            
-            self.verifyViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
-            didContinueExpectation.fulfill()
+            didContnueExpectation.fulfill()
         }
-        
-        button.sendActions(for: .touchUpInside)
-        
-        wait(for: [didContinueExpectation], timeout: 5)
+        wait(for: .milliseconds(300))
+        assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
     }
 
-    func testContinueButtonLoading() throws {
+    func testContinueButtonLoading() {
         // Given
         let config = OnlineBankingComponent.Configuration(style: style)
         let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
@@ -102,22 +99,16 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
        
-        let button: SubmitButton = try XCTUnwrap(
-            sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
-        )
+        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
 
-        try withoutAnimation {
-            // start loading
-            button.showsActivityIndicator = true
-            wait(until: button, at: \.showsActivityIndicator, is: true)
-            assertViewControllerImage(matching: sut.viewController, named: "initial_state")
+        // start loading
+        button.showsActivityIndicator = true
+        assertViewControllerImage(matching: sut.viewController, named: "initial_state")
 
-            // stop loading
-            sut.stopLoading()
-            button.showsActivityIndicator = false
-            wait(until: button, at: \.showsActivityIndicator, is: false)
-            assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
-        }
+        // stop loading
+        sut.stopLoading()
+        button.showsActivityIndicator = false
+        assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
     }
 
 }

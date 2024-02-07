@@ -9,6 +9,28 @@ import XCTest
 
 class FormPickerItemTests: XCTestCase {
     
+    class MockPresenter: ViewControllerPresenter {
+        
+        var present: (UIViewController, Bool) -> Void
+        var dismiss: (Bool) -> Void
+        
+        init(
+            present: @escaping (UIViewController, Bool) -> Void,
+            dismiss: @escaping (Bool) -> Void
+        ) {
+            self.present = present
+            self.dismiss = dismiss
+        }
+        
+        func presentViewController(_ viewController: UIViewController, animated: Bool) {
+            present(viewController, animated)
+        }
+        
+        func dismissViewController(animated: Bool) {
+            dismiss(animated)
+        }
+    }
+    
     func testPresentation() throws {
         
         let presentViewControllerExpectation = expectation(description: "presenter.presentViewController was called")
@@ -16,7 +38,7 @@ class FormPickerItemTests: XCTestCase {
         
         var presentedViewController: FormPickerSearchViewController?
         
-        let mockPresenter = PresenterMock { viewController, animated in
+        let mockPresenter = MockPresenter { viewController, animated in
             presentedViewController = viewController as? FormPickerSearchViewController
             presentViewControllerExpectation.fulfill()
         } dismiss: { animated in
@@ -37,14 +59,14 @@ class FormPickerItemTests: XCTestCase {
         
         formPickerItem.selectionHandler()
         
-        wait(for: [presentViewControllerExpectation], timeout: 10)
+        wait(for: [presentViewControllerExpectation], timeout: 1)
         
         setupRootViewController(presentedViewController!)
         
         let searchViewController = presentedViewController!.viewControllers.first as! SearchViewController
         searchViewController.viewModel.interfaceState.results?.first?.selectionHandler?()
         
-        wait(for: [dismissViewControllerExpectation], timeout: 10)
+        wait(for: [dismissViewControllerExpectation], timeout: 1)
     }
     
     func testAssertions() throws {
@@ -69,7 +91,7 @@ class FormPickerItemTests: XCTestCase {
         
         formPickerItem.resetValue()
         
-        wait(for: [resetValueException], timeout: 10)
+        wait(for: [resetValueException], timeout: 1)
         
         // Test updateValidationFailureMessage()
         
@@ -82,7 +104,7 @@ class FormPickerItemTests: XCTestCase {
         
         formPickerItem.updateValidationFailureMessage()
         
-        wait(for: [updateValidationFailureMessageException], timeout: 10)
+        wait(for: [updateValidationFailureMessageException], timeout: 1)
         
         // Test updateFormattedValue()
         
@@ -95,7 +117,7 @@ class FormPickerItemTests: XCTestCase {
         
         formPickerItem.updateFormattedValue()
         
-        wait(for: [updateFormattedValueException], timeout: 10)
+        wait(for: [updateFormattedValueException], timeout: 1)
         
         AdyenAssertion.listener = nil
     }

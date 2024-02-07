@@ -39,7 +39,6 @@ internal struct ComponentsView: View {
                 loadingIndicator
             }
         }
-        .navigationViewStyle(.stack)
         .ignoresSafeArea()
         .present(viewController: $viewModel.viewControllerToPresent)
         .onAppear {

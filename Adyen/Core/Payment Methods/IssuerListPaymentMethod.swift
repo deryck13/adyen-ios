@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,9 +31,9 @@ public struct IssuerListPaymentMethod: PaymentMethod {
             var issuers = [Issuer]()
 
             while !detailsContainer.isAtEnd {
-                let detailContainer = try detailsContainer.nestedContainer(keyedBy: CodingKeys.Details.self)
+                let detailContainer = try detailsContainer.nestedContainer(keyedBy: CodingKeys.self)
                 let detailKey = try detailContainer.decode(String.self, forKey: .key)
-                guard detailKey == CodingKeys.Details.issuerKey else {
+                guard detailKey == "issuer" else {
                     continue
                 }
 
@@ -46,13 +46,6 @@ public struct IssuerListPaymentMethod: PaymentMethod {
         }
     }
     
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(type, forKey: .type)
-        try container.encode(name, forKey: .name)
-        try container.encode(issuers, forKey: .issuers)
-    }
-    
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
@@ -61,16 +54,10 @@ public struct IssuerListPaymentMethod: PaymentMethod {
     private enum CodingKeys: String, CodingKey {
         case type
         case name
-        case issuers
-        
         case details
-        
-        enum Details: String, CodingKey {
-            case key
-            case items
-            
-            static var issuerKey: String { "issuer" }
-        }
+        case key
+        case items
+        case issuers
     }
     
 }

@@ -86,7 +86,6 @@
 "adyen.billingAddressSection.title" = "Dirección de facturación";
 "adyen.billingAddress.placeholder" = "Su dirección de facturación";
 "adyen.deliveryAddressSection.title" = "Dirección de envío";
-"adyen.deliveryAddress.placeholder" = "Su dirección de entrega";
 "adyen.countryField.title" = "País";
 "adyen.countryField.placeholder" = "País";
 "adyen.countryField.invalid" = "País no válido";

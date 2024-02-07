@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,24 +28,16 @@ extension CardViewController {
         private let initialCountry: String
         
         private let addressViewModelBuilder: AddressViewModelBuilder
-        
-        private let presenter: WeakReferenceViewControllerPresenter
-        
-        private let addressMode: CardComponent.AddressFormType
 
-        internal init(
-            formStyle: FormComponentStyle,
-            payment: Payment?,
-            configuration: CardComponent.Configuration,
-            shopperInformation: PrefilledShopperInformation?,
-            cardLogos: [FormCardLogosItem.CardTypeLogo],
-            scope: String,
-            initialCountryCode: String,
-            localizationParameters: LocalizationParameters?,
-            addressViewModelBuilder: AddressViewModelBuilder,
-            presenter: ViewControllerPresenter,
-            addressMode: CardComponent.AddressFormType
-        ) {
+        internal init(formStyle: FormComponentStyle,
+                      payment: Payment?,
+                      configuration: CardComponent.Configuration,
+                      shopperInformation: PrefilledShopperInformation?,
+                      cardLogos: [FormCardLogosItem.CardTypeLogo],
+                      scope: String,
+                      initialCountryCode: String,
+                      localizationParameters: LocalizationParameters?,
+                      addressViewModelBuilder: AddressViewModelBuilder) {
             self.formStyle = formStyle
             self.amount = payment?.amount
             self.configuration = configuration
@@ -55,38 +47,22 @@ extension CardViewController {
             self.initialCountry = initialCountryCode
             self.localizationParameters = localizationParameters
             self.addressViewModelBuilder = addressViewModelBuilder
-            self.presenter = .init(presenter)
-            self.addressMode = addressMode
         }
         
-        internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
-            switch addressMode {
-            case let .lookup(provider):
-                return billingAddressPickerItem(with: provider)
-            case .full:
-                return billingAddressPickerItem(with: nil)
-            case .postalCode, .none:
-                return nil
-            }
-        }()
-        
-        private func billingAddressPickerItem(with lookupProvider: AddressLookupProvider?) -> FormAddressPickerItem {
+        internal lazy var billingAddressPickerItem: FormAddressPickerItem = {
             let identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "billingAddress")
             let prefillAddress = shopperInformation?.billingAddress
             
-            return FormAddressPickerItem(
-                for: .billing,
+            let item = FormAddressPickerItem(
                 initialCountry: initialCountry,
-                supportedCountryCodes: configuration.billingAddress.countryCodes,
                 prefillAddress: prefillAddress,
-                style: formStyle,
+                style: formStyle.addressStyle,
                 localizationParameters: localizationParameters,
                 identifier: identifier,
-                addressViewModelBuilder: addressViewModelBuilder,
-                presenter: presenter,
-                lookupProvider: lookupProvider
+                addressViewModelBuilder: addressViewModelBuilder
             )
-        }
+            return item
+        }()
 
         internal lazy var postalCodeItem: FormPostalCodeItem = {
             let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)

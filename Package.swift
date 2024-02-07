@@ -19,10 +19,6 @@ let package = Package(
             targets: ["AdyenEncryption"]
         ),
         .library(
-            name: "AdyenSwiftUI",
-            targets: ["AdyenSwiftUI"]
-        ),
-        .library(
             name: "AdyenActions",
             targets: ["AdyenActions"]
         ),
@@ -35,58 +31,25 @@ let package = Package(
             targets: ["AdyenComponents"]
         ),
         .library(
-            name: "AdyenSession",
-            targets: ["AdyenSession"]
-        ),
-        .library(
             name: "AdyenDropIn",
             targets: ["AdyenDropIn"]
-        ),
-        .library(
-            name: "AdyenWeChatPay",
-            targets: ["AdyenWeChatPay"]
-        ),
-        .library(
-            name: "AdyenCashAppPay",
-            targets: ["AdyenCashAppPay"]
-        ),
-        .library(
-            name: "AdyenDelegatedAuthentication",
-            targets: ["AdyenDelegatedAuthentication"]
         )
     ],
     dependencies: [
         .package(
-            name: "Adyen3DS2",
-            url: "https://github.com/Adyen/adyen-3ds2-ios",
-            .exact(Version(2, 3, 3))
-        ),
-        .package(
-            name: "AdyenAuthentication",
-            url: "https://github.com/Adyen/adyen-authentication-ios",
-            .exact(Version(2, 0, 0))
-        ),
-        .package(
-            name: "AdyenNetworking",
             url: "https://github.com/Adyen/adyen-networking-ios",
-            .exact(Version(2, 0, 0))
-        ),
-        .package(
-            name: "AdyenWeChatPayInternal",
-            url: "https://github.com/Adyen/adyen-wechatpay-ios",
-            .exact(Version(2, 1, 0))
-        ),
-        .package(
-            name: "PayKit",
-            url: "https://github.com/cashapp/cash-app-pay-ios-sdk",
-            .exact(Version(0, 5, 1))
+            exact: Version(2, 0, 0)
         )
     ],
     targets: [
+        .binaryTarget(
+            name: "Adyen3DS2",
+            path: "Adyen3DS2/Static/Adyen3DS2.xcframework"
+        ),
         .target(
             name: "Adyen",
             dependencies: [
-                .product(name: "AdyenNetworking", package: "AdyenNetworking")
+                .product(name: "AdyenNetworking", package: "adyen-networking-ios")
             ],
             path: "Adyen",
             exclude: [
@@ -105,18 +68,10 @@ let package = Package(
             ]
         ),
         .target(
-            name: "AdyenSwiftUI",
-            dependencies: [],
-            path: "AdyenSwiftUI",
-            exclude: [
-                "Info.plist"
-            ]
-        ),
-        .target(
             name: "AdyenActions",
             dependencies: [
                 .target(name: "Adyen"),
-                .product(name: "Adyen3DS2", package: "Adyen3DS2")
+                .target(name: "Adyen3DS2")
             ],
             path: "AdyenActions",
             exclude: [
@@ -146,14 +101,6 @@ let package = Package(
             exclude: ["Info.plist"]
         ),
         .target(
-            name: "AdyenSession",
-            dependencies: [
-                .target(name: "Adyen"),
-                .target(name: "AdyenActions")
-            ],
-            path: "AdyenSession"
-        ),
-        .target(
             name: "AdyenDropIn",
             dependencies: [
                 .target(name: "AdyenCard"),
@@ -162,30 +109,6 @@ let package = Package(
             ],
             path: "AdyenDropIn",
             exclude: ["Info.plist"]
-        ),
-        .target(
-            name: "AdyenWeChatPay",
-            dependencies: [
-                .product(name: "AdyenWeChatPayInternal", package: "AdyenWeChatPayInternal"),
-                .target(name: "AdyenActions")
-            ],
-            path: "AdyenWeChatPay/WeChatPayActionComponent"
-        ),
-        .target(
-            name: "AdyenCashAppPay",
-            dependencies: [
-                .target(name: "Adyen"),
-                .product(name: "PayKit", package: "PayKit"),
-                .product(name: "PayKitUI", package: "PayKit")
-            ],
-            path: "AdyenCashAppPay"
-        ),
-        .target(
-            name: "AdyenDelegatedAuthentication",
-            dependencies: [
-                .product(name: "AdyenAuthentication", package: "AdyenAuthentication")
-            ],
-            path: "AdyenDelegatedAuthentication"
         )
     ]
 )

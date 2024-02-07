@@ -32,21 +32,20 @@ extension XCTestCase {
     ///
     /// - Parameters:
     ///   - expectation: the condition that is waited on
-    ///   - timeout: the maximum time (in seconds)  to wait.
-    ///   - retryInterval: the waiting time inbetween retries
+    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 1
     ///   - message: an optional message on failure
     func wait(
         until expectation: () -> Bool,
-        timeout: TimeInterval = 120,
-        retryInterval: DispatchTimeInterval = .seconds(1),
+        timeout: TimeInterval = 10,
         message: String? = nil
     ) {
         let thresholdDate = Date().addingTimeInterval(timeout)
+        let pauseInterval = DispatchTimeInterval.milliseconds(10)
         
         var isMatchingExpectation = expectation()
         
         while thresholdDate.timeIntervalSinceNow > 0, !isMatchingExpectation {
-            wait(for: retryInterval)
+            wait(for: pauseInterval)
             isMatchingExpectation = expectation()
         }
         
@@ -62,12 +61,12 @@ extension XCTestCase {
     ///   - target: the target to observe
     ///   - keyPath: the keyPath to check
     ///   - expectedValue: the value to check against
-    ///   - timeout: the maximum time (in seconds)  to wait.
+    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 2
     func wait<Value: Equatable, Target: AnyObject>(
         until target: Target,
         at keyPath: KeyPath<Target, Value>,
         is expectedValue: Value,
-        timeout: TimeInterval = 120,
+        timeout: TimeInterval = 10,
         line: Int = #line
     ) {
         wait(
@@ -85,12 +84,12 @@ extension XCTestCase {
     /// - Parameters:
     ///   - ofType: the type of the expected child viewController
     ///   - viewController: the parent viewController
-    ///   - timeout: the maximum time (in seconds)  to wait.
+    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 1
     @discardableResult
     func waitForViewController<T: UIViewController>(
         ofType: T.Type,
         toBecomeChildOf viewController: UIViewController,
-        timeout: TimeInterval = 60
+        timeout: TimeInterval = 10
     ) throws -> T {
         
         wait(
@@ -110,11 +109,11 @@ extension XCTestCase {
     /// - Parameters:
     ///   - ofType: the type of the expected child viewController
     ///   - viewController: the parent viewController
-    ///   - timeout: the maximum time (in seconds)  to wait.
+    ///   - timeout: the maximum time (in seconds)  to wait. Defaults to 1
     @discardableResult
     func waitUntilTopPresenter<T: UIViewController>(
         isOfType: T.Type,
-        timeout: TimeInterval = 60
+        timeout: TimeInterval = 10
     ) throws -> T {
         
         wait(

@@ -108,12 +108,13 @@ class PreApplePayComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testHintLabelAmount() throws {
+    func testHintLabelAmount() {
         presentOnRoot(sut.viewController)
         
-        let hintLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(by: "hintLabel"))
+        let hintLabel = self.sut.viewController.view.findView(by: "hintLabel") as? UILabel
         
-        XCTAssertEqual(hintLabel.text, self.applePayPayment.amount.formatted)
+        XCTAssertNotNil(hintLabel)
+        XCTAssertEqual(hintLabel?.text, self.applePayPayment.amount.formatted)
     }
 
     func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {

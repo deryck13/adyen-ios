@@ -45,7 +45,7 @@ class KeyboardObserverTests: XCTestCase, AdyenObserver {
             userInfo: [UIResponder.keyboardFrameEndUserInfoKey: expectedRects.first!]
         )
         
-        wait(for: [validExpectation], timeout: 10)
+        wait(for: [validExpectation], timeout: 1)
         
         // Invalid Notification
         
@@ -55,7 +55,7 @@ class KeyboardObserverTests: XCTestCase, AdyenObserver {
             userInfo: ["RandomKey": 1]
         )
 
-        wait(for: [invalidExpectation], timeout: 10)
+        wait(for: [invalidExpectation], timeout: 1)
         
         XCTAssertEqual(expectedRects.count, 0)
     }

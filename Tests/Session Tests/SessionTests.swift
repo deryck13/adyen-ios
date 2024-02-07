@@ -603,7 +603,7 @@ class SessionTests: XCTestCase {
         let component = MBWayComponent(paymentMethod: paymentMethod,
                                        context: context)
         sut.didSubmit(data, from: component)
-        wait(for: [didSubmitExpectation], timeout: 10)
+        wait(for: [didSubmitExpectation], timeout: 2)
     }
     
     func testDelegateDidProvideHandler() throws {
@@ -625,7 +625,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(data, from: RedirectComponent(context: context))
-        wait(for: [didProvideExpectation], timeout: 10)
+        wait(for: [didProvideExpectation], timeout: 2)
     }
     
     func testSessionAsDropInDelegate() throws {
@@ -734,7 +734,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 10)
+        wait(for: [didCompleteExpectation], timeout: 2)
     }
     
     func testResultCodePending() throws {
@@ -767,7 +767,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 10)
+        wait(for: [didCompleteExpectation], timeout: 2)
     }
     
     func testResultCodeRefused() throws {
@@ -800,7 +800,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 10)
+        wait(for: [didCompleteExpectation], timeout: 2)
     }
     
     func testResultCodeCancelled() throws {
@@ -833,7 +833,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 10)
+        wait(for: [didCompleteExpectation], timeout: 2)
     }
     
     func testResultCodeReceived() throws {
@@ -866,7 +866,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 10)
+        wait(for: [didCompleteExpectation], timeout: 2)
     }
     
     func testResultCodePresentToShopper() throws {
@@ -903,7 +903,7 @@ class SessionTests: XCTestCase {
             order: nil
         )
         sut.didSubmit(paymentData, from: paymentComponent)
-        wait(for: [didCompleteExpectation], timeout: 10)
+        wait(for: [didCompleteExpectation], timeout: 2)
     }
     
     func testResultCodeError() throws {
@@ -936,7 +936,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 10)
+        wait(for: [didCompleteExpectation], timeout: 2)
     }
     
     func testResultCodeErrorFromAnotherCode() throws {
@@ -969,7 +969,7 @@ class SessionTests: XCTestCase {
             paymentData: "payment_data"
         )
         sut.didProvide(actionData, from: QRCodeActionComponent(context: context))
-        wait(for: [didCompleteExpectation], timeout: 10)
+        wait(for: [didCompleteExpectation], timeout: 2)
     }
     
     func testInstallmentsFromSessionConfig() throws {
@@ -1059,7 +1059,7 @@ class SessionTests: XCTestCase {
                 XCTFail()
             }
         }
-        wait(for: [initializationExpectation], timeout: 10)
+        wait(for: [initializationExpectation], timeout: 2)
         return sut
     }
 

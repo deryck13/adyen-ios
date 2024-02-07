@@ -119,7 +119,7 @@ class ApplePayComponentTest: XCTestCase {
             onShippingSelected.fulfill()
         }
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 4)
     }
 
     func testApplePayShippingContact() {
@@ -151,7 +151,7 @@ class ApplePayComponentTest: XCTestCase {
             onContactSelected.fulfill()
         }
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 4)
     }
 
     func testApplePayCoupon() throws {
@@ -184,7 +184,7 @@ class ApplePayComponentTest: XCTestCase {
             onContactSelected.fulfill()
         }
 
-        waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 4)
     }
 
     func testInvalidCurrencyCode() {

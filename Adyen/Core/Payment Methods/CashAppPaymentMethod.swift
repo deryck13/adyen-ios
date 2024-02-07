@@ -26,20 +26,9 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
         self.type = try container.decode(PaymentMethodType.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
         
-        let configuration = try container.nestedContainer(keyedBy: CodingKeys.Configuration.self, forKey: .configuration)
+        let configuration = try container.nestedContainer(keyedBy: ConfigurationCodingKeys.self, forKey: .configuration)
         self.clientId = try configuration.decode(String.self, forKey: .clientId)
         self.scopeId = try configuration.decode(String.self, forKey: .scopeId)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(type, forKey: .type)
-        try container.encode(name, forKey: .name)
-        
-        var configuration = container.nestedContainer(keyedBy: CodingKeys.Configuration.self, forKey: .configuration)
-        try configuration.encode(clientId, forKey: .clientId)
-        try configuration.encode(scopeId, forKey: .scopeId)
     }
     
     @_spi(AdyenInternal)
@@ -53,10 +42,10 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
         case type
         case name
         case configuration
-        
-        enum Configuration: String, CodingKey {
-            case clientId
-            case scopeId
-        }
+    }
+    
+    private enum ConfigurationCodingKeys: String, CodingKey {
+        case clientId
+        case scopeId
     }
 }

@@ -20,7 +20,7 @@ public class AddressInputFormViewController: FormViewController {
             localizationParameters: viewModel.localizationParameters
         )
         
-        title = viewModel.title
+        title = localizedString(.billingAddressSectionTitle, viewModel.localizationParameters)
         
         if #available(iOS 13.0, *) {
             isModalInPresentation = true
@@ -30,7 +30,7 @@ public class AddressInputFormViewController: FormViewController {
             append(searchButtonItem)
         }
         
-        append(addressItem)
+        append(billingAddressItem)
         
         setupNavigationItems()
     }
@@ -41,10 +41,10 @@ public class AddressInputFormViewController: FormViewController {
         // The done button should only be enabled once at least one field is filled in.
         // Either by prefilling or manually entering.
         // The country field is excluded as it is always prefilled.
-        var itemWithoutCountry = addressItem.value
+        var itemWithoutCountry = billingAddressItem.value
         itemWithoutCountry.country = nil
         navigationItem.rightBarButtonItem?.isEnabled = !itemWithoutCountry.isEmpty
-        observe(addressItem.publisher, eventHandler: { [weak self] _ in
+        observe(billingAddressItem.publisher, eventHandler: { [weak self] _ in
             self?.navigationItem.rightBarButtonItem?.isEnabled = true
         })
     }
@@ -61,14 +61,14 @@ public class AddressInputFormViewController: FormViewController {
             identifier: identifier
         ) { [weak self] in
             guard let self else { return }
-            self.viewModel.handleShowSearch(currentInput: self.addressItem.value)
+            self.viewModel.handleShowSearch(currentInput: self.billingAddressItem.value)
         }
     }()
     
-    internal lazy var addressItem: FormAddressItem = {
+    internal lazy var billingAddressItem: FormAddressItem = {
         let identifier = ViewIdentifierBuilder.build(
             scopeInstance: Self.self,
-            postfix: "address"
+            postfix: "billingAddress"
         )
         
         let item = FormAddressItem(
@@ -109,7 +109,7 @@ private extension AddressInputFormViewController {
     @objc
     func submitTapped() {
         guard validate() else { return }
-        viewModel.handleSubmit(validAddress: addressItem.value)
+        viewModel.handleSubmit(validAddress: billingAddressItem.value)
     }
     
     @objc
